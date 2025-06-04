@@ -54,5 +54,7 @@ Duration: Measured in milliseconds, indicates track length
 
 ### Roles & Responsabilities:
 Blending of Songs -> Kenisé 
+
 Song Selection -> Shihui 
+
 Song Production -> Lauren 
