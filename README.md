@@ -10,7 +10,7 @@ Song and Album Information:
 - Song popularity rating (double, scale of 0–100)
 - Album name (char)
 - Album release date (char)
-- 
+  
 Playlist Information:
 - Unique playlist ID (char)
 - Playlist name (char)
