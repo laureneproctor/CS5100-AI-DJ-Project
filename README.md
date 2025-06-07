@@ -30,8 +30,9 @@ The dataset contains metrics on 30,000 songs streaming on Spotify.
 - Tempo: Measured in BPM (beats per minute)
 - Duration: Measured in milliseconds, indicates track length
 
+
 ## Workflow
-![image](https://github.com/user-attachments/assets/f6e543e2-1af7-481a-8470-c1882d1ac19c)
+![image](https://github.com/user-attachments/assets/37907059-94ad-4211-90d3-bf1ff607af31)
 
 
 ## Roles & Responsabilities:
