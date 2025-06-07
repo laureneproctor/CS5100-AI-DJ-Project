@@ -1,8 +1,7 @@
 # CS5100-AI-DJ-Project
 ### Data Set Used
-The dataset contains metrics on 30,000 songs streaming on Spotify.
-
-Song and Album Information:
+- The dataset contains metrics on 30,000 songs streaming on Spotify.
+- Song and Album Information:
 
 Unique song ID (char)
 
