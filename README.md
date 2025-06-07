@@ -1,8 +1,8 @@
 # CS5100-AI-DJ-Project
-### Data Set Used
+## Data Set Used
 The dataset contains metrics on 30,000 songs streaming on Spotify.
 
-Song and Album Information:
+### Song and Album Information:
 - Unique song ID (char)
 - Unique album ID (char)
 - Song name (char)
@@ -11,13 +11,13 @@ Song and Album Information:
 - Album name (char)
 - Album release date (char)
   
-Playlist Information:
+### Playlist Information:
 - Unique playlist ID (char)
 - Playlist name (char)
 - Playlist genre (char)
 - Playlist subgenre (char)
 
-Audio Features (all are double unless stated otherwise):
+### Audio Features (all are double unless stated otherwise):
 - Danceability: Scale of 0.0–1.0, measures how suitable a track is for dancing
 - Energy: Scale of 0.0–1.0, measures intensity and activity
 - Key: Numeric, where values map to musical keys (e.g., 0 = C, 1 = C♯/D♭, 2 = D, etc.)
@@ -30,11 +30,11 @@ Audio Features (all are double unless stated otherwise):
 - Tempo: Measured in BPM (beats per minute)
 - Duration: Measured in milliseconds, indicates track length
 
-### Workflow
+## Workflow
 ![image](https://github.com/user-attachments/assets/f6e543e2-1af7-481a-8470-c1882d1ac19c)
 
 
-### Roles & Responsabilities:
+## Roles & Responsabilities:
 Blending of Songs -> Kenisé 
 
 Song Selection -> Shihui 
