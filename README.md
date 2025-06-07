@@ -52,6 +52,10 @@ Tempo: Measured in BPM (beats per minute)
 
 Duration: Measured in milliseconds, indicates track length
 
+### Workflow
+![image](https://github.com/user-attachments/assets/f6e543e2-1af7-481a-8470-c1882d1ac19c)
+
+
 ### Roles & Responsabilities:
 Blending of Songs -> Kenisé 
 
