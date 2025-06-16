@@ -1,4 +1,3 @@
-import pandas as pd
 import random
 import math
 import numpy as np
@@ -10,13 +9,12 @@ def euclidean_dist(v1, v2):
     return math.sqrt(inner)
 
 # initially makes the centroids by choosing random values for each attribute/feature
-def create_centroids(k, ranges):
-    # ranges is a vector of size [number of features] with pair values representing the min and max ranges for each attribute
+def create_centroids(k, min_ranges, max_ranges):
     centroids = []
     for i in range(0, k):
         c = []
-        for feature in ranges:
-            c.append(random.uniform(feature[0], feature[1]))
+        for j in range(len(min_ranges)):
+            c.append(random.uniform(min_ranges[j], max_ranges[j]))
         centroids.append(c)
     return(centroids)
 
@@ -41,27 +39,13 @@ def create_clusters(data, centroids):
         clusters[best_cluster].append(p)
     return clusters
 
-# Data loading + prep
-songs = pd.read_csv("Data/spotify_songs.csv")
-with_titles = songs[["track_id", "danceability", "energy", "loudness", "mode", "valence", "tempo"]]
-track_ids = songs[["track_id"]].values
-subset = songs[["danceability", "energy", "loudness", "mode", "valence", "tempo"]]
-features = subset.values
-song_map = {tuple(features[i]): track_ids[i] for i in range(len(with_titles))}
-
-
-
 # k means, k = 2
-def find_ranges():
-    feature_ranges = []
-    for feat in subset:
-        mini = subset[feat].min()
-        maxi = subset[feat].max()
-        feature_ranges.append([mini, maxi])
-    return feature_ranges
+def find_ranges(data):
+    return np.min(data, axis=0), np.max(data, axis=0)
 
 def k_means_cluster(k, data):
-    centroids = create_centroids(k, find_ranges())
+    min_range, max_range = find_ranges(data)
+    centroids = create_centroids(k, min_range, max_range)
     converged = False
     iteration = 1
     threshold = 1e-5
@@ -79,11 +63,4 @@ def k_means_cluster(k, data):
         converged = all(differences)
         centroids = new_centroids
         iteration += 1
-    return clusters
-
-new_clusters = k_means_cluster(2, features)
-for i in range(2):
-    print(f"sample songs from cluster {i}")
-    for data in new_clusters[i][:5]:
-        print(song_map[tuple(data)])
-
+    return centroids
