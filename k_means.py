@@ -6,8 +6,10 @@ import matplotlib.pyplot as plt
 import data_prep as prep
 import pca
 import pickle
-from sklearn.preprocessing import StandardScaler
 
+K = 8
+LABEL_MAP = {0: "Happy", 1: "Sad", 2: "Tense", 3: "Dark" ,
+             4: "Wild", 5: "Chill", 6: "Powerful", 7: "Party"}
 
 def euclidean_dist(v1, v2):
     inner = 0
@@ -76,22 +78,21 @@ def k_means_cluster(k, data):
 def find_radius(clusters, centroids):
     radius = []
     for i in range(len(centroids)):
-        radius.append(np.max([euclidean_dist(data_point, centroids[i]) for data_point in clusters[i]]))
+        features = [feature for (_, feature) in clusters[i]]
+        radius.append(np.max([euclidean_dist(data_point, centroids[i]) for data_point in features]))
     return radius
 
 def find_k():
     train_data = pca.TRAIN_DATA
     avg_radius = []
-    for k in range(2, 17):
+    for k in range(2, 16):
         clusters, centroids = k_means_cluster(k, train_data)
         radius = find_radius(clusters, centroids)
         avg_radius.append(np.mean(radius))
-    plt.plot(range(2, 17), avg_radius)
+    plt.plot(range(2, 16), avg_radius)
     plt.xlabel("Number of clusters")
     plt.ylabel("Average Radius")
     plt.show()
-
-K = 7
 
 def save_clusters():
     with open("clusters.pkl", "wb") as f:
