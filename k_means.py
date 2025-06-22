@@ -6,8 +6,10 @@ import matplotlib.pyplot as plt
 import data_prep as prep
 import pca
 import pickle
-from sklearn.preprocessing import StandardScaler
 
+K = 6
+LABEL_MAP = {0: "Happy", 1: "Sad", 2: "Powerful", 3: "Chill" ,
+             4: "Tense", 5: "Party"}
 
 def euclidean_dist(v1, v2):
     inner = 0
@@ -19,14 +21,14 @@ def euclidean_dist(v1, v2):
 # then pick points that are as far away from one another as possible
 def create_centroids(k, data):
     # randomly choose the first point
-    centroids = [random.choice(data)]
+    centroids = [random.choice(data)[1]]
     # add the point whose minimum distance from the selected points as large as possible
     while len(centroids) < k:
         min_distances = []
-        for p in data:
+        for _, p in data:
             distances = [euclidean_dist(p, c) for c in centroids]
             min_distances.append(min(distances))
-        next_c = data[np.argmax(min_distances)]
+        next_c = data[np.argmax(min_distances)][1]
         centroids.append(next_c)
     return(centroids)
 
@@ -44,7 +46,7 @@ def create_clusters(data, centroids):
     for i in range(k):
         clusters.append([])
 
-    for i, p in enumerate(data):
+    for i, p in data:
         distances = [euclidean_dist(p, c) for c in centroids]
         # use argmin to speed up this process
         best_cluster = np.argmin(distances)
@@ -67,7 +69,7 @@ def k_means_cluster(k, data):
             new_c = update_centroid([feature for (_, feature) in cluster])
             if new_c is not None:
                 new_centroids.append(new_c)
-            differences.append(euclidean_dist(old_c, new_c) < threshold)
+                differences.append(euclidean_dist(old_c, new_c) < threshold)
         converged = all(differences)
         centroids = new_centroids
         iteration += 1
@@ -76,22 +78,28 @@ def k_means_cluster(k, data):
 def find_radius(clusters, centroids):
     radius = []
     for i in range(len(centroids)):
-        radius.append(np.max([euclidean_dist(data_point, centroids[i]) for data_point in clusters[i]]))
+        features = [feature for (_, feature) in clusters[i]]
+        if len(features) == 0:
+            radius.append(0)
+        else:
+            radius.append(np.max([euclidean_dist(data_point, centroids[i]) 
+                                  for data_point in features]))
     return radius
 
 def find_k():
     train_data = pca.TRAIN_DATA
     avg_radius = []
-    for k in range(2, 17):
-        clusters, centroids = k_means_cluster(k, train_data)
-        radius = find_radius(clusters, centroids)
-        avg_radius.append(np.mean(radius))
-    plt.plot(range(2, 17), avg_radius)
+    for k in range(2, 16):
+        radius_list = []
+        for _ in range(5):
+            clusters, centroids = k_means_cluster(k, train_data)
+            radius = find_radius(clusters, centroids)
+            radius_list.append(np.mean(radius))
+        avg_radius.append(np.mean(radius_list))
+    plt.plot(range(2, 16), avg_radius)
     plt.xlabel("Number of clusters")
     plt.ylabel("Average Radius")
     plt.show()
-
-K = 7
 
 def save_clusters():
     with open("clusters.pkl", "wb") as f:

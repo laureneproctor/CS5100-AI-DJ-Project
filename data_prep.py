@@ -4,8 +4,7 @@ from sklearn.preprocessing import StandardScaler
 
 DATA = pd.read_csv("Data/spotify_songs.csv")
 ss = StandardScaler()
-FEATURES = ["danceability", "energy", "key", "loudness", "mode", "speechiness", 
-                 "instrumentalness", "valence", "tempo"]
+FEATURES = ["danceability", "energy", "key", "loudness", "mode", "valence", "tempo"]
 
 # returns data with relevant columns to be trained on and normalize it
 def prep_data(data=DATA):
