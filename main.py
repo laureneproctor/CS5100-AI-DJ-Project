@@ -10,8 +10,9 @@ SONG_MAP = prep.map_data()
 LABEL_MAP = k_means.LABEL_MAP
 K = k_means.K
 CLUSTERS, CENTROIDS = k_means.CLUSTERS, k_means.CENTROIDS
+NO_SAMPLE_SONGS = 75
 
-sampled_test_data = random.sample(TEST_DATA, 60)
+sampled_test_data = random.sample(TEST_DATA, NO_SAMPLE_SONGS)
 
 def show_options():
     print("Moods availabe to choose from: ")
