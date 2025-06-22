@@ -30,4 +30,6 @@ def find_n():
 
 MY_PCA = PCA(n_components=3)
 DATA_AFTER_PCA = MY_PCA.fit_transform(prep.NORMALIZED_DATA)
-TRAIN_DATA, TEST_DATA = prep.split_data(DATA_AFTER_PCA)
+# keep the original indices to get back track names and artists
+DATA_WITH_INDICES = list(zip(range(len(DATA_AFTER_PCA)), DATA_AFTER_PCA))
+TRAIN_DATA, TEST_DATA = prep.split_data(DATA_WITH_INDICES)
