@@ -3,6 +3,8 @@ import data_prep as prep
 import random
 import pca
 import k_means
+import playlist as play
+import pandas as pd
 
 DATA_AFTER_PCA = pca.DATA_AFTER_PCA
 TRAIN_DATA, TEST_DATA = pca.TRAIN_DATA, pca.TEST_DATA
@@ -25,19 +27,28 @@ def get_playlist(input_songs=sampled_test_data):
     while cluster not in valid_cluster:
         show_options()
         cluster = input("Choose the mood of your playlist (type the number): ")
-    # a playlist of track name and artist, print out for debugging 
+
+    # Collect songs for selected cluster
     cluster_output = k_means.create_clusters(input_songs, CENTROIDS)
-    playlist_info = [SONG_MAP[idx] for (idx, _) in cluster_output[int(cluster)-1]]
-    raw_playlist = cluster_output[int(cluster)-1]
-    # transfer the pcas back to original features to be used in local search
-    pcas = [feature for (_, feature) in raw_playlist]
-    normalized_features = pca.MY_PCA.inverse_transform(pcas)
-    original_features = prep.ss.inverse_transform(normalized_features)
-    playlist = [(raw_playlist[i][0], original_features[i]) for i in range(len(raw_playlist))]
-    print(len(playlist_info))
-    print(playlist_info)
-    # The data structure is (index, array["danceability", "energy", "key", "loudness", "mode", "valence", "tempo"])
-    return playlist
+    cluster_index = int(cluster) - 1
+    cluster_songs = cluster_output[cluster_index]  # A list of (idx, vector) for the selected mood
+    playlist_info = [SONG_MAP[idx] for (idx, _) in cluster_songs]
+
+    # Convert playlist_info to DataFrame for local search
+    playlist_df = pd.DataFrame(
+        playlist_info,
+        columns=['track_name', 'track_artist', 'tempo', 'key']
+    )
+    
+    # Run local search (hill climbing)
+    ordered_playlist, cost = play.search(playlist_df)
+
+    # Display results
+    print(f"\nOptimized playlist (transition cost: {cost:.2f}):")
+    for idx, song in enumerate(ordered_playlist):
+        print(f"{idx+1:02d}. {song['track_name']} - {song['track_artist']} (Key: {song['key']}, Tempo: {song['tempo']})")
+
+
 
 if __name__ == "__main__":
     get_playlist()

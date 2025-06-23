@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 import random
+import matplotlib.pyplot as plt
 
 """
 Features that all songs have: danceability, energy, key, loudness, mode, speechiness, instrumentalness, valence, tempo
@@ -9,7 +10,7 @@ Features that will be used in our cost function is key, and tempo
 """
 
 
-def load_songs(file_path="Data/spotify_songs.csv", sample_size=20):
+def load_songs(file_path="Data/spotify_songs.csv", sample_size=10000):
     df = pd.read_csv(file_path)
     df = df[['track_name', 'track_artist', 'tempo', 'key']].dropna().reset_index(drop=True)
 
@@ -33,14 +34,19 @@ def transition_cost(song1, song2, alpha=1.0, beta=1.0):
 
 def total_cost(playlist):
     cost = 0
+
     for i in range (len(playlist) - 1):
         cost += transition_cost(playlist[i], playlist[i+1])
+
     return cost
 
 # Performs hill climbing to find best order of playlist
-def search(songs, max_iterations=1000):
+def search(songs, max_iterations=10000):
+    
     best_order = songs.copy().to_dict(orient="records")
     best_cost = total_cost(best_order)
+
+    cost_history = [best_cost] # Tracks cost over iterations
 
     for _ in range(max_iterations):
         # Different neighbors by swapping any two songs
@@ -52,6 +58,8 @@ def search(songs, max_iterations=1000):
         if current_cost < best_cost:
             best_order = neigh
             best_cost = current_cost
+
+        cost_history.append(best_cost)
 
     return best_order, best_cost
 
