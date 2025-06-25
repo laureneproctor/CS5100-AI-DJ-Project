@@ -32,12 +32,5 @@ The dataset contains metrics on 30,000 songs streaming on Spotify.
 
 
 ## Workflow
-![image](https://github.com/user-attachments/assets/37907059-94ad-4211-90d3-bf1ff607af31)
+![image](https://github.com/user-attachments/assets/ff3c0511-487f-4a98-ab57-7b8fc786474e)
 
-
-## Roles & Responsabilities:
-Blending of Songs -> Kenisé 
-
-Song Selection -> Shihui 
-
-Song Production -> Lauren 
